@@ -42,4 +42,32 @@ class Controller extends BaseController
             'author' => $faker->userName()
         ];
     }
+
+    public function getCategories(): array 
+    {
+        $faker = Factory::create();
+        $cats = [];
+        for ($i = 0; $i < 5; $i++) {
+            $cats[$i] = [
+                'title' => $faker->jobTitle(),
+                'description' => $faker->text(250),
+            ];
+        }
+        return $cats;
+    }
+
+    public function getNewsByCatId(int $catId): array 
+    {
+        $faker = Factory::create();
+        $news = [];
+        for ($i = 0; $i < 4; $i++) {
+            $news[$i] = [
+                'category_id' => $catId,
+                'title' => $faker->jobTitle(),
+                'description' => $faker->text(250),
+                'author' => $faker->userName()
+            ];
+        }
+        return $news;
+    }
 }

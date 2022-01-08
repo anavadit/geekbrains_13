@@ -3,7 +3,9 @@
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\CategoryController AS AdminCategoryController;
+use App\Http\Controllers\HiController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +40,12 @@ Route::get('/news/action/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+') // чтоб роут парсил только числа в параметрах (айдишники), иначе 404, а не сломанная страница  чтоб  была
     ->name('news/show'); // Меняем урл без изменения имени
 
+    
+// Lesson2: homework
+Route::get('/hi', [HiController::class, 'index']);
+
+//cats
+Route::get('/cats', [CategoryController::class, 'index']);
+Route::get('/cats/{id}', [CategoryController::class, 'show'])
+    ->where('id', '\d+') // чтоб роут парсил только числа в параметрах (айдишники), иначе 404, а не сломанная страница  чтоб  была
+    ->name('cats/show'); // Меняем урл без изменения имени

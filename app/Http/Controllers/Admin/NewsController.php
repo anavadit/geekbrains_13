@@ -24,7 +24,10 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return "Create news";
+        $cats = $this->getCategories();
+        return view('admin/news/create', [
+            'cats' => $cats
+        ]);
     }
 
     /**
@@ -35,7 +38,7 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
