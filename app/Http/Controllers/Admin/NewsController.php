@@ -68,6 +68,9 @@ class NewsController extends Controller
             'title' => ['required', 'string', 'min:5']
         ]);
 
+        $data = json_encode($request->all());
+        file_put_contents(public_path('news/data.json'), $data);
+
         return response()->json($request->all(), 201);
         // return response()->download('robots.txt');
         // dd($request->all());
