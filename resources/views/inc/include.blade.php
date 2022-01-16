@@ -1,0 +1,1 @@
+Hello, {{ $someVariable }} and {{ $name }}! <a href="{{ route('admin.news.create') }}" type="button" class="btn btn-sm btn-outline-secondary">Добавить новость</a>

@@ -14,7 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return "Admin news";
+        return view('admin.news.index');
     }
 
     /**
@@ -22,12 +22,28 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $cats = $this->getCategories();
-        return view('admin/news/create', [
-            'cats' => $cats
-        ]);
+        $news = [
+            'news' => [
+                [
+                    'title' => 1,
+                    'description' => 1
+                ],
+                [
+                    'title' => 2,
+                    'description' => 2
+                ],
+                [
+                    'title' => 3,
+                    'description' => 3
+                ]
+            ]
+        ];
+
+        // $get = data_get($news, 'news.*.title');
+        // return response('Hello world!', 201)->header('Content-Type', 'text/html');
+        return view('admin.news.create');
     }
 
     /**
@@ -38,7 +54,23 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request->all()); // все поля формы отдампить
+        // dd($request->only(['title', 'author'])); // только эти поля отдампить
+        // dd($request->except(['title', 'author'])); // все кроме этих полей отдампить
+        // dd($request->input('title'));
+        // dd($request->has('title')); // существование поля
+        // dd($request->path());
+        // dd($request->fullUrl()); //  с гет-параметрами
+        // dd($request->url());
+        // dd($request->query());
+
+        $request->validate([
+            'title' => ['required', 'string', 'min:5']
+        ]);
+
+        return response()->json($request->all(), 201);
+        // return response()->download('robots.txt');
+        // dd($request->all());
     }
 
     /**
