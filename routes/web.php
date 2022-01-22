@@ -24,7 +24,6 @@ Route::get('/', function () {
 
 Route::get('/hello/{name}', fn(string $name) => "Hello, {$name}");
 
-
 // admin news - должны быть выше(если не в группе) , чтоб не распарсились нижней регуляркой
 // для ресорсных контроллеров (с авто методами crud) (-r) достаточно:
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() { // см $ ./vendor/bin/sail php artisan route:list (команда в контейнере запустится из обычной консоли)
@@ -33,13 +32,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() { // см $ ./v
     Route::resource('/categories', AdminCategoryController::class);
 });
 
-
-
 // news routes
-Route::get('/news', [NewsController::class, 'index']);
+Route::get('/newslist', [NewsController::class, 'index'])
+    ->name('news.index');
 Route::get('/news/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+') // чтоб роут парсил только числа в параметрах (айдишники), иначе 404, а не сломанная страница  чтоб  была
-    ->name('news/show'); // Меняем урл без изменения имени
+    ->name('news.show'); // Меняем урл без изменения имени
 
     
 // Lesson2: homework

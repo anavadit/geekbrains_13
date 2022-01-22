@@ -48,7 +48,7 @@ class NewsTest extends TestCase
 
     public function testNewsShow()
     {
-        $response = $this->get(route('news/show', ['id' => mt_rand(1,10)]));
+        $response = $this->get(route('news.show', ['id' => mt_rand(1,10)]));
         $response->assertStatus(200);
     }
 }
