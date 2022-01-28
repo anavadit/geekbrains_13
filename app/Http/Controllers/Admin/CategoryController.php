@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view ('admin.categories.index');
+        $categories = Category::with('news')->paginate(5);
+        return view ('admin.categories.index', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -41,10 +45,10 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Category $category  - уже можель с выбранным в запросе значением!
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
         //
     }

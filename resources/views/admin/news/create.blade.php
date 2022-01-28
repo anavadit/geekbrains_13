@@ -8,15 +8,19 @@
 
 @section('content')
 
-    @if($errors->any())
-        @foreach($errors->all() as $error) 
-            <x-alert type="danger" :message="$error"></x-alert>
-        @endforeach
-    @endif
+    @include('inc.message');
 
-    <div class ="form-group">
-        <form method="post" action="{{ route('admin.news.store', ['q' => 1]) }}">
+    <div>
+        <form method="post" action="{{ route('admin.news.store') }}">
             @csrf
+            <div class="form-group">
+                <label for="category_id">Категория</label>
+                <select id="category_id" name="category_id" class="form-control">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->title }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form-group">
                 <label for="title">Наименование новости</label>
                 <input id="title" type="text" class="form-control" name="title" required="required"  value="{{ old('title') }}" />

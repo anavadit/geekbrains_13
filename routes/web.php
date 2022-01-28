@@ -35,8 +35,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() { // см $ ./v
 // news routes
 Route::get('/newslist', [NewsController::class, 'index'])
     ->name('news.index');
-Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+') // чтоб роут парсил только числа в параметрах (айдишники), иначе 404, а не сломанная страница  чтоб  была
+
+Route::get('/news/{news}', [NewsController::class, 'show'])
+    ->where('news', '\d+') // чтоб роут парсил только числа в параметрах (айдишники), иначе 404, а не сломанная страница  чтоб  была
     ->name('news.show'); // Меняем урл без изменения имени
 
     
@@ -49,4 +50,12 @@ Route::get('/cats/{id}', [CategoryController::class, 'show'])
     ->where('id', '\d+') // чтоб роут парсил только числа в параметрах (айдишники), иначе 404, а не сломанная страница  чтоб  была
     ->name('cats/show'); // Меняем урл без изменения имени
 
-
+Route::get('/collection', function() {
+    $array = ['Anna', 'Victor', 'Alexey', 'dima', 'ira', 'Vasya', 'olya'];
+    $collection = collect($array); // объект коллекции, к ней много полезных методов
+    dd(
+        $collection->map(function($item) {
+            return mb_strtoupper($item);
+        })->sortKeys()
+    );
+});
