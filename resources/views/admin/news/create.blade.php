@@ -8,9 +8,9 @@
 
 @section('content')
 
-    @include('inc.message');
+    @include('inc.message')
 
-    <div>
+    <div class ="form-group">
         <form method="post" action="{{ route('admin.news.store') }}">
             @csrf
             <div class="form-group">

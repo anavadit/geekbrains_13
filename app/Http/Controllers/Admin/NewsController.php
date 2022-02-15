@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use Illuminate\Http\Request;
 use App\Models\Category;
-
+// use Illuminate\Foundation\Validation\ValidatesRequests;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\EditRequest;
 
 class NewsController extends Controller
 {
+    // use ValidatesRequests;
+
     /**
      * Display a listing of the resource.
      *
@@ -85,12 +89,12 @@ class NewsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Запускается при сохранении новой созданной новости
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
         // dd($request->all()); // все поля формы отдампить
         // dd($request->only(['title', 'author'])); // только эти поля отдампить
@@ -102,16 +106,27 @@ class NewsController extends Controller
         // dd($request->url());
         // dd($request->query());
 
-        $request->validate([
-            'title' => ['required', 'string', 'min:5']
-        ]);
+        // $request->validate([
+        //     'title' => ['required', 'string', 'min:5']
+        // ]);
 
-        $data = $request->only(['category_id', 'title', 'author', 'status', 'description']) + [
+        // try{ // не должно быть в контроллере, переносим  в rules
+        //     $this->validate($request, [
+        //         'title' => ['required', 'string', 'min:5']
+        //     ]); // то же самое $request->validate
+        // } catch(\Exception $e) { // ValidationException не отрабатывает
+        //     dd($e->validator->getMessageBag());
+        // }
+
+        // $data = $request->only(['category_id', 'title', 'author', 'status', 'description']) + [
+        //     'slug' => \Str::slug($request->input('title'))
+        // ];
+        $data = $request->only($request->validated()) + [
             'slug' => \Str::slug($request->input('title'))
         ];
-        $created = News::create($data);
 
         
+        $created = News::create($data);
 
         // $data = json_encode($request->all());
         // file_put_contents(public_path('news/data.json'), $data);
@@ -141,33 +156,39 @@ class NewsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * ЗАпускается при открытии формы для редактирования новости
      *
      * @param  News  $news
      * @return \Illuminate\Http\Response
      */
     public function edit(News $news)
     {
+
+        $categories = Category::all();
+
         return view('admin.news.edit', [
-            'news' => $news
+            'news' => $news,
+            'categories' => $categories
         ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Запускается при сохранении отредактированной новости
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditRequest  $request
      * @param  News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News  $news)
+    public function update(EditRequest $request, News  $news)
     {
         
         // $news->title = "blabla";
 
-        $updated = $news->fill($request->only(['category_id', 'title', 'author', 'status', 'description']) + [
+        // dd($request->validated());
+
+        $updated = $news->fill($request->validated() + [
             'slug' => \Str::slug($request->input('title'))
-        ])->save();
+        ])->save(); 
 
         if ($updated) {
             return redirect()->route('admin.news.index')

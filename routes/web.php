@@ -33,7 +33,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() { // см $ ./v
 });
 
 // news routes
-Route::get('/newslist', [NewsController::class, 'index'])
+Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
 
 Route::get('/news/{news}', [NewsController::class, 'show'])

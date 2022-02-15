@@ -7,20 +7,31 @@
 @endsection
 
 @section('content')
-
-    @include('inc.message');
-
     <div class ="form-group">
+
+        @include('inc.message')
+
         <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
             @csrf
             @method('put')
             <div class="form-group">
+                <label for="category_id">Категория</label>
+                <select id="category_id" name="category_id" class="form-control">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" @if($category->id === $news->category_id) selected @endif>{{ $category->title }}</option>
+                    @endforeach
+                </select>
+                @error('category_id') <strong style="color:red;">{{ $message }}</strong> @enderror
+            </div>
+            <div class="form-group">
                 <label for="title">Наименование новости</label>
                 <input id="title" type="text" class="form-control" name="title" required="required"  value="{{ $news->title }}" />
+                @error('title') <strong style="color:red;">{{ $message }}</strong> @enderror
             </div>
             <div class="form-group">
                 <label for="author">Автор</label>
                 <input id="author" type="text" class="form-control" name="author" required="required"  value="{{ $news->author }}" />
+                @error('author') <strong style="color:red;">{{ $message }}</strong> @enderror
             </div>
             <div class="form-group">
                 <label for="status">Статус</label>
